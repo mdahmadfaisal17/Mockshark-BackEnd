@@ -85,7 +85,7 @@ export const register = async (req, res) => {
       return res.status(409).json(jsonResponse(false, 'User already exists', null));
     }
 
-    const verifyLink = `https://mockshark-ten.vercel.app/verify-email?id=${result.id}`;
+    const verifyLink = `https://www.mockshark.com/verify-email?id=${result.id}`;
 
     await sendEmail(
       email,
