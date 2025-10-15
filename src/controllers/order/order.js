@@ -1369,8 +1369,21 @@ export const getBundles = async (req, res) => {
 };
 export const deleteBundle = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // id will already be a string
 
+    // 1. Check if bundle exists
+    const bundle = await prisma.bundle.findUnique({
+      where: { id }, // no Number() conversion!
+    });
+
+    if (!bundle) {
+      return res.status(404).json({
+        success: false,
+        message: "Bundle not found",
+      });
+    }
+
+    // 2. Delete the bundle
     const deleted = await prisma.bundle.delete({
       where: { id },
     });
@@ -1389,6 +1402,7 @@ export const deleteBundle = async (req, res) => {
     });
   }
 };
+
 
 export const downloadWithCredit = async (req, res) => {
   const { userId, productId } = req.query;
